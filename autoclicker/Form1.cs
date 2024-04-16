@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsInput;
 using System.Windows.Input;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace autoclicker
 {
@@ -16,6 +18,7 @@ namespace autoclicker
     {
         InputSimulator input = new InputSimulator();
         int count;
+        bool getPos = false;
 
         public Form1()
         {
@@ -40,11 +43,7 @@ namespace autoclicker
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int X = Cursor.Position.X;
-            int Y = Cursor.Position.Y;
-
-            textBox1.Text = X.ToString();
-            textBox2.Text = Y.ToString();
+            getPos = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -65,6 +64,20 @@ namespace autoclicker
             else
             {
                 count -= 1;
+            }
+        }
+
+        private void Form1_Deactivate(object sender, EventArgs e)
+        {
+            if (getPos == true)
+            {
+                int X = Cursor.Position.X;
+                int Y = Cursor.Position.Y;
+
+                textBox1.Text = X.ToString();
+                textBox2.Text = Y.ToString();
+
+                getPos = false;
             }
         }
     }
